@@ -2,68 +2,169 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
-<title>NeonArc Gaming Browser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GXLite Gaming Browser</title>
 <style>
-  body {
-    margin: 0;
+  /* Reset & Grundfarben */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    height: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1a001f;
-    color: #eee;
+    background: #0d0d0d;
+    color: #ccc;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 72px;
+    background: linear-gradient(180deg, #2e003e 0%, #0d001a 100%);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    align-items: center;
+    padding-top: 10px;
+    border-right: 1px solid #3a003a;
+  }
+  #sidebar button {
+    background: none;
+    border: none;
+    margin: 12px 0;
+    width: 48px;
+    height: 48px;
+    color: #9a00ff;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+    filter: drop-shadow(0 0 6px #9a00ff);
+  }
+  #sidebar button:hover, #sidebar button.active {
+    color: #ff005f;
+    filter: drop-shadow(0 0 12px #ff005f);
+  }
+  #sidebar button svg {
+    width: 28px;
+    height: 28px;
+  }
+  #sidebar button:focus {
+    outline: none;
   }
 
-  header {
-    background: #33004d;
-    padding: 10px;
+  /* Main Content */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #121212;
+  }
+
+  /* Topbar */
+  #topbar {
+    height: 48px;
+    background: #1a001f;
     display: flex;
     align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #3a003a;
   }
 
-  header input {
+  #urlInput {
     flex: 1;
-    padding: 8px;
-    border: none;
+    height: 28px;
     border-radius: 4px;
+    border: none;
+    padding: 0 12px;
     font-size: 14px;
     background: #290033;
     color: #eee;
+    box-shadow: 0 0 8px #9a00ff;
+    transition: box-shadow 0.3s ease;
+  }
+  #urlInput:focus {
+    outline: none;
+    box-shadow: 0 0 14px #ff005f;
   }
 
-  header button {
+  #goBtn {
     margin-left: 8px;
-    padding: 8px 12px;
-    background: #8000ff;
-    color: white;
+    background: #9a00ff;
     border: none;
+    color: white;
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0 0 8px #9a00ff;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  #goBtn:hover {
+    background: #ff005f;
+    box-shadow: 0 0 14px #ff005f;
   }
 
-  header button:hover {
-    background: #a64dff;
+  /* Iframe Container */
+  #content {
+    flex: 1;
+    border: none;
   }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: black;
+  }
+
 </style>
 </head>
 <body>
 
-<header>
-  <input id="urlInput" placeholder="Gib eine URL ein, z.B. https://example.com" />
-  <button onclick="openSite()">Seite öffnen</button>
-</header>
+<div id="sidebar">
+  <button id="btnYouTube" title="YouTube" class="active" onclick="loadSite('https://www.youtube.com', this)">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 15l5.19-3-5.19-3z"/><path d="M21.8 8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.9C15 5.6 12 5.6 12 5.6h-.1s-3 0-6 .1c-.4 0-1.2 0-1.9.9-.6.6-.8 2-.8 2S3 9.7 3 11.5v1c0 1.8.2 3.5.2 3.5s.2 1.4.8 2c.7.7 1.6.7 2 0.8 1.5.1 6 .1 6 .1s3 0 6-.1c.4 0 1.2 0 1.9-.9.6-.6.8-2 .8-2s.2-1.7.2-3.5v-1c0-1.8-.2-3.5-.2-3.5z"/></svg>
+  </button>
+  <button id="btnTwitch" title="Twitch" onclick="loadSite('https://www.twitch.tv', this)">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 2l-2 4v14h6v4l4-4h6l4-4V2H4zm14 9h-3v4h-3v-4H6v-2h12v2z"/></svg>
+  </button>
+  <button id="btnDiscord" title="Discord" onclick="loadSite('https://discord.com/app', this)">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM9 15c-1.1 0-2-.9-2-2 0-1.1.9-2 2-2s2 .9 2 2c0 1.1-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2 0-1.1.9-2 2-2s2 .9 2 2c0 1.1-.9 2-2 2z"/></svg>
+  </button>
+</div>
 
-<div style="padding:20px;">
-  <p>🔗 Jede Website wird in einem neuen Fenster geöffnet.</p>
+<div id="main">
+  <div id="topbar">
+    <input type="text" id="urlInput" placeholder="Gib eine URL ein, z.B. https://example.com" />
+    <button id="goBtn" onclick="goToUrl()">Los</button>
+  </div>
+  <iframe id="content" src="https://www.youtube.com"></iframe>
 </div>
 
 <script>
-  function openSite() {
-    const url = document.getElementById('urlInput').value.trim();
-    if (!url) return;
-    const fixedUrl = url.startsWith('http') ? url : 'https://' + url;
-    window.open(fixedUrl, '_blank');
+  const iframe = document.getElementById('content');
+  const urlInput = document.getElementById('urlInput');
+  const sidebarButtons = document.querySelectorAll('#sidebar button');
+
+  function loadSite(url, btn) {
+    iframe.src = url;
+    urlInput.value = url;
+    sidebarButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   }
+
+  function goToUrl() {
+    let url = urlInput.value.trim();
+    if (!url) return;
+    if (!url.startsWith('http')) {
+      url = 'https://' + url;
+    }
+    iframe.src = url;
+    sidebarButtons.forEach(b => b.classList.remove('active'));
+  }
+
+  // Load YouTube by default
+  urlInput.value = "https://www.youtube.com";
 </script>
 
 </body>
