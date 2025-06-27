@@ -63,17 +63,16 @@
     justify-content: center;
     align-items: center;
     background: #120014;
-    color: #bbb;
-    font-size: 18px;
     user-select: none;
   }
 
-  main p {
-    max-width: 600px;
-    text-align: center;
-    line-height: 1.5;
+  /* Logo SVG Container */
+  .logo-container {
+    width: 300px;
+    height: 80px;
   }
 
+  /* Buttons */
   .quick-links {
     display: flex;
     justify-content: center;
@@ -109,7 +108,41 @@
 
 <main>
   <div>
-    <p>Willkommen im GXLite Gaming Browser! Öffne deine Lieblingsseiten oder wähle direkt:</p>
+    <!-- Logo SVG -->
+    <div class="logo-container">
+      <svg width="100%" height="100%" viewBox="0 0 250 70" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="neon" x="-50%" y="-50%" width="200%" height="200%" >
+            <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#9a00ff" flood-opacity="0.8"/>
+            <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#ff00b8" flood-opacity="0.6"/>
+          </filter>
+          <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#9a00ff"/>
+            <stop offset="100%" stop-color="#ff00b8"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Hintergrund Glow Kreis -->
+        <circle cx="35" cy="35" r="30" fill="url(#grad)" filter="url(#neon)" />
+
+        <!-- Stilisiertes "N" im Kreis -->
+        <text x="35" y="47" font-family="Segoe UI, Tahoma, Geneva, Verdana, sans-serif" font-size="40" font-weight="900" text-anchor="middle" fill="#fff" filter="url(#neon)">
+          N
+        </text>
+
+        <!-- Schriftzug NeonArc -->
+        <text x="85" y="45" font-family="Segoe UI, Tahoma, Geneva, Verdana, sans-serif" font-size="36" font-weight="700" fill="url(#grad)" filter="url(#neon)">
+          NeonArc
+        </text>
+
+        <!-- Schriftzug Gaming Browser klein -->
+        <text x="85" y="65" font-family="Segoe UI, Tahoma, Geneva, Verdana, sans-serif" font-size="14" fill="#ff00b8" opacity="0.7">
+          Gaming Browser
+        </text>
+      </svg>
+    </div>
+
+    <!-- Schnell-Links Buttons -->
     <div class="quick-links">
       <button onclick="openUrl('https://www.youtube.com')">YouTube</button>
       <button onclick="openUrl('https://www.twitch.tv')">Twitch</button>
@@ -132,3 +165,4 @@
 
 </body>
 </html>
+  
