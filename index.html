@@ -44,79 +44,25 @@
   header button:hover {
     background: #a64dff;
   }
-
-  .tabs {
-    display: flex;
-    background: #260033;
-    overflow-x: auto;
-  }
-
-  .tab {
-    padding: 8px 12px;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    user-select: none;
-  }
-
-  .tab.active {
-    border-bottom: 2px solid #b84dff;
-    background: #33004d;
-  }
-
-  iframe {
-    flex: 1;
-    border: none;
-    width: 100%;
-  }
 </style>
 </head>
 <body>
 
 <header>
   <input id="urlInput" placeholder="Gib eine URL ein, z.B. https://example.com" />
-  <button onclick="addTab()">Tab öffnen</button>
+  <button onclick="openSite()">Seite öffnen</button>
 </header>
 
-<div class="tabs" id="tabs"></div>
-
-<iframe id="browserFrame" src="https://www.youtube.com"></iframe>
+<div style="padding:20px;">
+  <p>🔗 Jede Website wird in einem neuen Fenster geöffnet.</p>
+</div>
 
 <script>
-  const tabsContainer = document.getElementById('tabs');
-  const browserFrame = document.getElementById('browserFrame');
-  let tabs = ["https://www.youtube.com"];
-  let activeTabIndex = 0;
-
-  renderTabs();
-
-  function addTab() {
+  function openSite() {
     const url = document.getElementById('urlInput').value.trim();
     if (!url) return;
-
-    tabs.push(url);
-    activeTabIndex = tabs.length - 1;
-    renderTabs();
-    loadTab(activeTabIndex);
-    document.getElementById('urlInput').value = '';
-  }
-
-  function renderTabs() {
-    tabsContainer.innerHTML = '';
-    tabs.forEach((url, index) => {
-      const tab = document.createElement('div');
-      tab.textContent = url.includes('youtube') ? 'YouTube' : url;
-      tab.className = 'tab' + (index === activeTabIndex ? ' active' : '');
-      tab.onclick = () => {
-        activeTabIndex = index;
-        renderTabs();
-        loadTab(index);
-      };
-      tabsContainer.appendChild(tab);
-    });
-  }
-
-  function loadTab(index) {
-    browserFrame.src = tabs[index];
+    const fixedUrl = url.startsWith('http') ? url : 'https://' + url;
+    window.open(fixedUrl, '_blank');
   }
 </script>
 
