@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Gaming Browser</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  header {
+    background: #1f1f1f;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  header input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  header button {
+    margin-left: 8px;
+    padding: 8px 12px;
+    background: #0f62fe;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  header button:hover {
+    background: #0353e9;
+  }
+
+  .tabs {
+    display: flex;
+    background: #222;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    user-select: none;
+  }
+
+  .tab.active {
+    border-bottom: 2px solid #0f62fe;
+    background: #333;
+  }
+
+  iframe {
+    flex: 1;
+    border: none;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <input id="urlInput" placeholder="Gib eine URL ein, z.B. https://example.com" />
+  <button onclick="addTab()">Tab öffnen</button>
+</header>
+
+<div class="tabs" id="tabs"></div>
+
+<iframe id="browserFrame" src=""></iframe>
+
+<script>
+  const tabsContainer = document.getElementById('tabs');
+  const browserFrame = document.getElementById('browserFrame');
+  let tabs = [];
+  let activeTabIndex = -1;
+
+  function addTab() {
+    const url = document.getElementById('urlInput').value.trim();
+    if (!url) return;
+
+    tabs.push(url);
+    activeTabIndex = tabs.length - 1;
+    renderTabs();
+    loadTab(activeTabIndex);
+    document.getElementById('urlInput').value = '';
+  }
+
+  function renderTabs() {
+    tabsContainer.innerHTML = '';
+    tabs.forEach((url, index) => {
+      const tab = document.createElement('div');
+      tab.textContent = url;
+      tab.className = 'tab' + (index === activeTabIndex ? ' active' : '');
+      tab.onclick = () => {
+        activeTabIndex = index;
+        renderTabs();
+        loadTab(index);
+      };
+      tabsContainer.appendChild(tab);
+    });
+  }
+
+  function loadTab(index) {
+    browserFrame.src = tabs[index];
+  }
+</script>
+
+</body>
+</html>
